@@ -1,73 +1,108 @@
-# React + TypeScript + Vite
+# 🍕 Pizza Store - Modern React Pizza Ordering App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A beautiful, modern pizza store frontend built with React, TypeScript, Vite, and Tailwind CSS. Features a complete menu, custom pizza builder, and smooth animations.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Home Page** - Hero section with animated pizza carousel
+- **Menu Page** - Browse pizzas with category filters and shopping cart
+- **Custom Pizza Builder** - 5-step wizard to build your perfect pizza
+- **About Page** - Company story, team members, and contact information
+- **Responsive Design** - Works perfectly on desktop, tablet, and mobile
+- **Smooth Animations** - GPU-optimized animations for smooth performance
+- **Modern UI** - Clean, modern design with Tailwind CSS
 
-## React Compiler
+## 🚀 Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js 18+ and npm
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Installation
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Clone the repository:
+```bash
+git clone git@github.com:Ali-oss-cell/pizza_store_au.git
+cd pizza-store-front
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies:
+```bash
+npm install
 ```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and visit `http://localhost:5173`
+
+## 📦 Build for Production
+
+```bash
+npm run build
+```
+
+The production build will be in the `dist` folder.
+
+Preview the production build:
+```bash
+npm run preview
+```
+
+## 🛠️ Tech Stack
+
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Styling
+- **React Router** - Client-side routing
+- **Lucide React** - Icons
+
+## 📁 Project Structure
+
+```
+src/
+├── components/     # Reusable components (Header, WaveDivider)
+├── pages/          # Page components (Home, Menu, Custom, About)
+├── lib/            # Utility functions
+├── App.tsx         # Main app component with routing
+├── main.tsx        # Entry point
+└── index.css       # Global styles and animations
+```
+
+## 🎨 Pages
+
+- **/** - Home page with hero carousel
+- **/menu** - Full menu with filters and cart
+- **/custom** - Custom pizza builder
+- **/about** - About us page
+
+## 📝 Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## 🎯 Future Enhancements
+
+- [ ] Shopping cart persistence
+- [ ] User authentication
+- [ ] Order tracking
+- [ ] Payment integration
+- [ ] Admin dashboard
+- [ ] Real-time order updates
+
+## 📄 License
+
+This project is private and proprietary.
+
+## 👨‍💻 Author
+
+Ali - [GitHub](https://github.com/Ali-oss-cell)
+
+---
+
+Made with ❤️ and 🍕
