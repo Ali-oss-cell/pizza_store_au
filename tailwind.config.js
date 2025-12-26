@@ -8,10 +8,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        'pizza-orange': '#ff6b35',
-        'pizza-green': '#4ade80',
-        'pizza-dark': '#1f2937',
-        'pizza-red': '#dc2626',
+        'pizza-purple': '#3a2c73',
+        'pizza-gold': '#f8bf1a',
+        'pizza-white': '#ffffff',
+        // Legacy aliases for compatibility
+        'pizza-orange': '#f8bf1a',
+        'pizza-dark': '#3a2c73',
+        'pizza-red': '#2a1f5c',
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

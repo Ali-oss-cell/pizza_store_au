@@ -1,13 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { CartProvider } from './contexts/CartContext'
+import { ToastProvider } from './contexts/ToastContext'
 import { Header } from './components/Header'
 import { ProtectedRoute } from './components/ProtectedRoute'
-import { HomePage, MenuPage, CustomPage, AboutPage, AdminLoginPage, AdminDashboardPage } from './pages'
+import { HomePage, MenuPage, CustomPage, AboutPage, CartPage, ProductDetailPage, AdminLoginPage, AdminDashboardPage } from './pages'
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <CartProvider>
+        <ToastProvider>
+          <Router>
         <div className="min-h-screen bg-gray-50 overflow-hidden">
           {/* Header - Only show on non-admin pages */}
           <Routes>
@@ -19,8 +23,10 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/menu" element={<MenuPage />} />
+            <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/custom" element={<CustomPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/cart" element={<CartPage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLoginPage />} />
@@ -46,8 +52,8 @@ function App() {
                     </h3>
                     <p className="text-gray-400 text-sm">
                       Crafting authentic Italian pizzas with love and passion since 2014.
-                    </p>
-                  </div>
+          </p>
+        </div>
                   <div>
                     <h4 className="font-semibold mb-4">Quick Links</h4>
                     <ul className="space-y-2 text-gray-400 text-sm">
@@ -81,6 +87,8 @@ function App() {
           </Routes>
         </div>
       </Router>
+      </ToastProvider>
+      </CartProvider>
     </AuthProvider>
   )
 }

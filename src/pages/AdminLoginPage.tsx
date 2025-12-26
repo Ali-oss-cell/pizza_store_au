@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { Lock, User, AlertCircle, ChefHat } from 'lucide-react'
+import { Lock, User, AlertCircle } from 'lucide-react'
 
 export const AdminLoginPage = () => {
   const [username, setUsername] = useState('')
@@ -47,11 +47,15 @@ export const AdminLoginPage = () => {
       <div className="w-full max-w-md relative z-10">
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-pizza-orange rounded-full mb-4 shadow-lg">
-            <ChefHat className="w-10 h-10 text-white" />
+          <div className="inline-flex items-center justify-center mb-4">
+            <img 
+              src="/logo.png" 
+              alt="Pizza Store Logo" 
+              className="h-24 md:h-32 w-auto"
+            />
           </div>
           <h1 className="text-4xl font-bold text-white mb-2">
-            Admin <span className="text-pizza-orange">Portal</span>
+            Admin <span className="text-pizza-gold">Portal</span>
           </h1>
           <p className="text-gray-400">Sign in to manage your pizza store</p>
         </div>
@@ -81,7 +85,7 @@ export const AdminLoginPage = () => {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pizza-orange focus:border-pizza-orange outline-none transition-all"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pizza-gold focus:border-pizza-gold outline-none transition-all"
                   placeholder="Enter your username"
                   required
                   autoComplete="username"
@@ -103,7 +107,7 @@ export const AdminLoginPage = () => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pizza-orange focus:border-pizza-orange outline-none transition-all"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pizza-gold focus:border-pizza-gold outline-none transition-all"
                   placeholder="Enter your password"
                   required
                   autoComplete="current-password"
@@ -115,7 +119,7 @@ export const AdminLoginPage = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-pizza-orange text-white py-3 px-4 rounded-xl font-semibold hover:bg-pizza-red transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
+              className="w-full bg-pizza-gold text-pizza-purple py-3 px-4 rounded-xl font-semibold hover:bg-pizza-gold/90 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>

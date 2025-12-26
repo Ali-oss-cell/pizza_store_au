@@ -1,5 +1,8 @@
 import { useState } from 'react'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { ShoppingCart, Filter, Star, Clock, Flame } from 'lucide-react'
+import { useCart } from '../contexts/CartContext'
+import { useToast } from '../contexts/ToastContext'
 
 // Extended pizza menu data
 const menuItems = [
@@ -105,33 +108,41 @@ const categories = ['All', 'Classic', 'Vegetarian', 'Spicy', 'Meat', 'Healthy']
 
 export const MenuPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All')
-  const [cart, setCart] = useState<{id: number, qty: number}[]>([])
+  const [searchParams] = useSearchParams()
+  const searchQuery = searchParams.get('search') || ''
+  const { addToCart, cartTotal, cartCount } = useCart()
+  const { showToast } = useToast()
+  const navigate = useNavigate()
 
-  const filteredItems = selectedCategory === 'All' 
-    ? menuItems 
-    : menuItems.filter(item => item.category === selectedCategory)
+  // Filter items by category and search
+  const filteredItems = menuItems.filter(item => {
+    const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory
+    const matchesSearch = !searchQuery || 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesCategory && matchesSearch
+  })
 
-  const addToCart = (id: number) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.id === id)
-      if (existing) {
-        return prev.map(item => item.id === id ? {...item, qty: item.qty + 1} : item)
-      }
-      return [...prev, {id, qty: 1}]
-    })
+  const handleAddToCart = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation()
+    const menuItem = menuItems.find(item => item.id === id)
+    if (menuItem) {
+      addToCart({
+        id: menuItem.id,
+        qty: 1,
+        name: menuItem.name,
+        price: menuItem.price,
+        image: menuItem.image,
+      })
+      showToast(`${menuItem.name} added to cart!`, 'success')
+    }
   }
-
-  const cartTotal = cart.reduce((sum, item) => {
-    const menuItem = menuItems.find(m => m.id === item.id)
-    return sum + (menuItem?.price || 0) * item.qty
-  }, 0)
-
-  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       {/* Hero Banner */}
-      <div className="relative bg-pizza-dark py-20 px-8 overflow-hidden">
+      <div className="relative bg-pizza-purple py-20 px-8 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
@@ -139,7 +150,7 @@ export const MenuPage = () => {
         </div>
         <div className="max-w-7xl mx-auto relative z-10">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 text-center">
-            Our <span className="text-pizza-orange">Menu</span>
+            Our <span className="text-pizza-gold">Menu</span>
           </h1>
           <p className="text-gray-300 text-xl text-center max-w-2xl mx-auto">
             Handcrafted pizzas made with love and the finest ingredients
@@ -160,7 +171,7 @@ export const MenuPage = () => {
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                     selectedCategory === cat
-                      ? 'bg-pizza-orange text-white shadow-lg'
+                      ? 'bg-pizza-gold text-pizza-purple shadow-lg'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -170,33 +181,50 @@ export const MenuPage = () => {
             </div>
 
             {/* Cart Summary */}
-            <div className="flex items-center gap-4 bg-pizza-orange/10 px-6 py-3 rounded-full">
+            <Link 
+              to="/cart"
+              className="flex items-center gap-4 bg-pizza-gold/20 px-6 py-3 rounded-full hover:bg-pizza-gold/30 transition-colors"
+            >
               <div className="relative">
-                <ShoppingCart className="w-6 h-6 text-pizza-orange" />
+                <ShoppingCart className="w-6 h-6 text-pizza-purple" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-pizza-red text-white text-xs rounded-full flex items-center justify-center font-bold">
+                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-pizza-gold text-pizza-purple text-xs rounded-full flex items-center justify-center font-bold">
                     {cartCount}
                   </span>
                 )}
               </div>
-              <span className="font-bold text-pizza-dark">${cartTotal.toFixed(2)}</span>
+              <span className="font-bold text-pizza-purple">${cartTotal.toFixed(2)}</span>
               {cartCount > 0 && (
-                <button className="px-4 py-1 bg-pizza-orange text-white rounded-full text-sm font-medium hover:bg-pizza-red transition-colors">
-                  Checkout
-                </button>
+                <span className="px-4 py-1 bg-pizza-gold text-pizza-purple rounded-full text-sm font-medium">
+                  View Cart
+                </span>
               )}
-            </div>
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Menu Grid */}
       <div className="max-w-7xl mx-auto px-8 py-12">
+        {/* Search Results Header */}
+        {searchQuery && (
+          <div className="mb-6">
+            <p className="text-gray-600">
+              {filteredItems.length > 0 ? (
+                <>Found <span className="font-bold text-pizza-purple">{filteredItems.length}</span> {filteredItems.length === 1 ? 'result' : 'results'} for "<span className="font-semibold">{searchQuery}</span>"</>
+              ) : (
+                <>No results found for "<span className="font-semibold">{searchQuery}</span>"</>
+              )}
+            </p>
+          </div>
+        )}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredItems.map((item, index) => (
             <div
               key={item.id}
-              className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+              onClick={() => navigate(`/product/${item.id}`)}
+              className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Image Container */}
@@ -225,8 +253,8 @@ export const MenuPage = () => {
                 </div>
                 {/* Quick Add Button */}
                 <button
-                  onClick={() => addToCart(item.id)}
-                  className="absolute bottom-3 right-3 w-12 h-12 bg-pizza-orange text-white rounded-full flex items-center justify-center shadow-lg transform translate-y-16 group-hover:translate-y-0 transition-all duration-300 hover:bg-pizza-red hover:scale-110"
+                  onClick={(e) => handleAddToCart(e, item.id)}
+                  className="absolute bottom-3 right-3 w-12 h-12 bg-pizza-gold text-pizza-purple rounded-full flex items-center justify-center shadow-lg transform translate-y-16 group-hover:translate-y-0 transition-all duration-300 hover:bg-pizza-gold/90 hover:scale-110 z-10"
                 >
                   <ShoppingCart className="w-5 h-5" />
                 </button>
@@ -236,12 +264,12 @@ export const MenuPage = () => {
               <div className="p-5">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <span className="text-xs font-medium text-pizza-orange uppercase tracking-wide">
+                    <span className="text-xs font-medium text-pizza-gold uppercase tracking-wide">
                       {item.category}
                     </span>
-                    <h3 className="text-lg font-bold text-gray-900 mt-1">{item.name}</h3>
+                    <h3 className="text-lg font-bold text-gray-900 mt-1 hover:text-pizza-purple transition-colors">{item.name}</h3>
                   </div>
-                  <span className="text-2xl font-bold text-pizza-dark">${item.price}</span>
+                  <span className="text-2xl font-bold text-pizza-purple">${item.price}</span>
                 </div>
                 
                 <p className="text-gray-500 text-sm mb-4 line-clamp-2">{item.description}</p>
