@@ -183,14 +183,18 @@ export const ProductsPage = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className="text-sm font-semibold text-gray-900">
-                            ${parseFloat(product.basePrice).toFixed(2)}
+                            ${product.basePrice != null 
+                              ? parseFloat(String(product.basePrice)).toFixed(2) 
+                              : '0.00'}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-1">
                             <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                             <span className="text-sm text-gray-600">
-                              {product.averageRating?.toFixed(1) || 'N/A'}
+                              {product.averageRating != null && typeof product.averageRating === 'number' 
+                                ? product.averageRating.toFixed(1) 
+                                : 'N/A'}
                             </span>
                             {product.ratingCount > 0 && (
                               <span className="text-xs text-gray-400">

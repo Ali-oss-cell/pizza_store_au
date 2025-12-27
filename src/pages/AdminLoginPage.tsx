@@ -23,16 +23,20 @@ export const AdminLoginPage = () => {
     setError('')
     setIsLoading(true)
 
-    // Simulate API call delay
-    setTimeout(() => {
-      const success = login(username, password)
-      if (success) {
+    try {
+      const result = await login(username, password)
+      if (result.success) {
+        // Navigation will happen automatically via useEffect when isAuthenticated changes
         navigate('/admin/dashboard')
       } else {
-        setError('Invalid username or password')
+        setError(result.message || 'Invalid username or password')
       }
+    } catch (error: any) {
+      setError('An error occurred. Please try again.')
+      console.error('Login error:', error)
+    } finally {
       setIsLoading(false)
-    }, 500)
+    }
   }
 
   return (

@@ -6,6 +6,7 @@ import { CombinedGraphQLErrors } from '@apollo/client/errors'
 // GraphQL endpoint - update this to your Django GraphQL endpoint
 const httpLink = createHttpLink({
   uri: import.meta.env.VITE_GRAPHQL_URL || 'http://localhost:8000/graphql/',
+  credentials: 'include', // Include cookies for Django session-based auth
 })
 
 // Auth link to add token to headers
